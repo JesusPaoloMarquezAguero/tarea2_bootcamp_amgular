@@ -1,0 +1,144 @@
+<h1>Formulario de Actividades</h1>
+
+<div class="m-2">
+    <form [formGroup]="forma" (ngSubmit)="guardar()" >
+        <div formGroupName="nombreCompleto">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input
+                type="text"
+                class="form-control"
+                formControlName="nombre" 
+                [ngClass]="{'is-invalid': forma.get('nombreCompleto.nombre').invalid}"
+                />
+                <div *ngIf="forma.get('nombreCompleto.nombre').errors?.required" class="invalid-feedback">
+                   nombre necesario
+                </div>
+                <div *ngIf="forma.get('nombreCompleto.nombre').errors?.minlength" class="invalid-feedback">
+                   nombre debe tener mas de 5 caracteres
+                 </div>
+                
+            </div>
+            <div class="form-group">
+                <label for="nombre">Apellido</label>
+                <input
+                type="text"
+                class="form-control"
+                formControlName="apellido"
+                [ngClass]="{'is-invalid': forma.get('nombreCompleto.apellido').invalid}"
+                />
+                <div *ngIf="forma.get('nombreCompleto.apellido').errors?.required" class="invalid-feedback">
+                    apellido es  requerido
+                 </div>
+                 <div *ngIf="forma.get('nombreCompleto.apellido').errors?.minlength" class="invalid-feedback">
+                    apellido debe tener mas de 5 caracteres
+                  </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label >Password</label>
+            <input
+            type="password"
+            class="form-control"
+            formControlName="pass"
+            [ngClass]="{'is-invalid': forma.get('pass').invalid}"
+            />
+            <div *ngIf="forma.get('pass').errors?.required" class="invalid-feedback">
+                se requiere agregar contraseña
+             </div>
+             <div *ngIf="forma.get('pass').errors?.minlength" class="invalid-feedback">
+                contraseña debe tener mas de 8 caracteres
+              </div>
+        </div>
+        <div class="form-group">
+            <label >Confirme su password</label>
+            <input
+            type="password"
+            class="form-control"
+            formControlName="pass2"
+            [ngClass]="{'is-invalid': forma.get('pass2').invalid}"
+            />
+            <div *ngIf="forma.get('pass2').errors?.required" class="invalid-feedback">
+                se requiere agregar confirmacion de contraseña
+             </div>
+             <div *ngIf="forma.get('pass2').errors?.minlength" class="invalid-feedback">
+                debe tener mas para la confirmacion
+              </div>
+        </div>
+        <div class="form-group">
+            <label >Cargo:</label>
+            <input
+            type="text"
+            class="form-control"
+            formControlName="cargo"
+            [ngClass]="{'is-invalid': forma.get('cargo').invalid}"
+            />
+            <div *ngIf="forma.get('cargo').errors?.required" class="invalid-feedback">
+                se requiere ingresar cargo
+             </div>
+             <div *ngIf="forma.get('cargo').errors?.minlength" class="invalid-feedback">
+                cargo debe tener mas de 6 caracteres
+              </div>
+        </div>
+        <div class="form-group">
+            <label>Correo</label>
+            <input
+            type="text"
+            class="form-control"
+            formControlName="correo"
+            [ngClass]="{'is-invalid': forma.get('correo').invalid}"
+            />
+            <div *ngIf="forma.get('correo').errors?.required" class="invalid-feedback">
+                se requiere ingresar correo
+             </div>
+             <div *ngIf="forma.get('correo').errors?.pattern" class="invalid-feedback">
+                formato de correo invalido
+             </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect2">Cliente</label>
+            <select class="form-control"
+            formControlName="cliente"
+            >
+              <option *ngFor="let cliente of clientes">
+                  {{cliente}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input"
+            formControlName="vacaciones">
+            <label class="form-check-label" for="exampleCheck1">Esta de vacaciones?</label>
+          </div>
+          <div formArrayName="intereses">
+            <div class="form-group">
+                <button type="button" class="btn btn-info" (click)="agregarIntereses()">Agregar intereses</button>
+                <br><label>intereses</label>
+                <input
+                *ngFor="let interes of forma.get('intereses')['controls']; let i = index"
+                type="text"
+                class="form-control"
+                [formControlName]="i"
+                [ngClass]="{'is-invalid': forma.get('intereses').invalid}"
+                />
+                <div *ngIf="validarIntereses()" class="invalid-feedback">
+                    se requiere ingresar intereses
+                 </div>
+            </div>
+         
+               
+                
+          </div>
+          
+        <button  type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+</div>
+<div class="p-2">
+    {{ forma.value | json }}
+</div>
+<div class="p-2">
+    status del formulario: {{ forma.status }}
+</div>
+<div class="p-2">
+   status de nombre completo:  {{ forma.controls.nombreCompleto.status }}
+</div>
